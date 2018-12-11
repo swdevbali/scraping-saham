@@ -2,7 +2,7 @@ import io
 import os
 
 from django.http import HttpResponse
-import matplotlib.pyplot as plt
+from matplotlib import pyplot
 from pandas import Series
 import matplotlib
 from matplotlib.figure import Figure
@@ -51,12 +51,12 @@ def get_chart(requests):
     #DATA VISUALIZATION
     f = matplotlib.figure.Figure()
     series = Series.from_csv('data.csv', header=0, sep=',')
-    plt.plot(series)
+    pyplot.plot(series)
 
     #Django fix: create in buffer first
     buf = io.BytesIO()
-    plt.savefig(buf, format='png')
-    plt.close(f)
+    pyplot.savefig(buf, format='png')
+    pyplot.close(f)
 
     response = HttpResponse(buf.getvalue(), content_type='image/png')
     return response
