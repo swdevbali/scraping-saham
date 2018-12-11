@@ -12,6 +12,7 @@ def generate_chart(perusahaan, durasi='1W'):
 
     url = 'https://www.idx.co.id/umbraco/Surface/Helper/GetStockChart?indexCode={}&period={}'\
         .format(perusahaan, durasi)
+
     try:
         result = requests.get(url)
         if result.status_code == 200:
@@ -39,5 +40,3 @@ def generate_chart(perusahaan, durasi='1W'):
     series = Series.from_csv('data.csv', header=0, sep=',')
     pyplot.plot(series)
     pyplot.show()
-
-generate_chart('BBCA', durasi='1Y')
