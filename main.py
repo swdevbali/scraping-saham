@@ -15,14 +15,22 @@ try:
         print(data['ChartData'])
         chart_data = data['ChartData']
 
+        #DATA PROCESSING
         f = open('data.csv', 'w')
-        f.write('#Tanggal;Value\n')
+        f.write('#Tanggal,Value\n')
         for d in chart_data:
             tanggal = time.strftime("%Y-%m-%d %H:%M:%S", time.localtime(int(d['Date']) / 1000))
             value = d['Close']
             print(tanggal, ';', value)
-            f.write('"{}";{}\n'.format(tanggal, value))
+            f.write('"{}",{}\n'.format(tanggal, value))
         f.close()
 
 except Exception as ex:
     print(ex)
+
+from pandas import Series
+from matplotlib import pyplot
+
+series = Series.from_csv('data.csv')
+pyplot.plot(series)
+pyplot.show()
