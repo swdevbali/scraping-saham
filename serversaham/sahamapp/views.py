@@ -2,9 +2,10 @@ import io
 import os
 
 from django.http import HttpResponse
-from matplotlib import pyplot
+import matplotlib.pyplot as plt
 from pandas import Series
-
+import matplotlib
+from matplotlib.figure import Figure
 
 def get_chart(requests):
     perusahaan='SRTG'
@@ -48,24 +49,16 @@ def get_chart(requests):
         print(ex)
 
     #DATA VISUALIZATION
-    import matplotlib
-    from matplotlib.backends.backend_agg import FigureCanvasAgg as FigureCanvas
-    from matplotlib.backends.backend_agg import FigureCanvasAgg
-
-    from matplotlib.figure import Figure
-    import numpy as np
-
-
     f = matplotlib.figure.Figure()
-    f.text(0, 0, 'Hai')
     series = Series.from_csv('data.csv', header=0, sep=',')
-    pyplot.plot(series)
+    plt.plot(series)
 
+    #Django fix: create in buffer first
     buf = io.BytesIO()
-    canvas = FigureCanvasAgg(f)
-    canvas.print_png(buf)
-    response=HttpResponse(buf.getvalue(),content_type='image/png')
-    response['Content-Length'] = str(len(response.content))
+    plt.savefig(buf, format='png')
+    plt.close(f)
+
+    response = HttpResponse(buf.getvalue(), content_type='image/png')
     return response
 
 
