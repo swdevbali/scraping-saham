@@ -3,7 +3,7 @@ GET: data muncul jika url dijalankan lewat broswer
 POST: data tidak bs diambil lewat browesr, namun via <FORM/> POST
 """
 
-def generate_chart(perusahaan, durasi='1W'):
+def generate_chart(perusahaan, durasi='1Y'):
     """
     Fungsi ini akan menghasilkan image dari data stock seminggu terakhir dari perusahaan tertentu
     :return:
@@ -47,4 +47,4 @@ def generate_chart(perusahaan, durasi='1W'):
     pyplot.plot(series)
     pyplot.show()
 
-generate_chart('BBCA', durasi='1Y')
+generate_chart('BBCA')
