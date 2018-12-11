@@ -8,6 +8,8 @@ import pprint
 import time
 
 try:
+
+    # DATA ACQUISITION
     result = requests.get('https://www.idx.co.id/umbraco/Surface/Helper/GetStockChart?indexCode=SRTG&period=1W')
     if result.status_code == 200:
         data = json.loads(result.text)
@@ -15,6 +17,7 @@ try:
         print(data['ChartData'])
         chart_data = data['ChartData']
 
+        # Data Processing
         f = open('data.csv', 'w')
         f.write('#Tanggal;Value\n')
         for d in chart_data:
@@ -27,3 +30,13 @@ try:
 
 except Exception as ex:
     print(ex)
+
+#Data Visualization
+#Matplotlib -> Pandas
+from pandas import Series
+from matplotlib import pyplot
+
+series = Series.from_csv('data.csv', header=0, sep=';')
+pyplot.plot(series)
+pyplot.show()
+
