@@ -2,19 +2,27 @@ from django.shortcuts import render
 from django.http import HttpResponse
 from matplotlib.backends.backend_template import FigureCanvas
 from matplotlib.figure import Figure
+import requests
 
 
-def generate_chart(company_code, periode='1Y'):
-    import requests
+def index(request):
+    return render(request,'index.html')
+
+
+def get_chart(request, code, period):
     import json
     import pprint
     import time
+    import io
+    import matplotlib
     from pandas import Series
     from matplotlib import pyplot
 
     try:
         # DATA ACQUISITION
-        url = 'https://www.idx.co.id/umbraco/Surface/Helper/GetStockChart?indexCode={}&period={}'.format(company_code,periode)
+        url = 'https://www.idx.co.id/umbraco/Surface/Helper/GetStockChart?indexCode={}&period={}'\
+            .format(code,period)
+
         result = requests.get(url)
         if result.status_code == 200:
             data = json.loads(result.text)
@@ -37,19 +45,14 @@ def generate_chart(company_code, periode='1Y'):
         print(ex)
 
     # DATA VIZUALISATION
-    series = Series.from_csv('data.csv')
+    f = matplotlib.figure.Figure()
+    series = Series.from_csv('data.csv', header=0, sep=',')
+    pyplot.clf()
     pyplot.plot(series)
 
-    fig = Figure()
-    canvas = FigureCanvas()
+    buf = io.BytesIO()
+    pyplot.savefig(buf, format='png')
+    pyplot.close()
 
-
-
-# Create your views here.
-def get_chart(request):
-    """
-    Ambil data dari IDX kemudian plot time series
-    :param request:
-    :return:
-    """
-    return HttpResponse('Hello World!')
+    response = HttpResponse(buf.getvalue(), content_type='image/png')
+    return response
