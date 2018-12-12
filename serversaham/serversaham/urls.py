@@ -20,5 +20,5 @@ from sahamapp.views import get_chart
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('saham/', get_chart),
+    path('saham/<perusahaan>/<durasi>', get_chart),
 ]

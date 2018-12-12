@@ -1,15 +1,13 @@
 import io
+import matplotlib
 import os
 
 from django.http import HttpResponse
 from matplotlib import pyplot
 from pandas import Series
-import matplotlib
-from matplotlib.figure import Figure
 
-def get_chart(requests):
-    perusahaan='SRTG'
-    durasi = '1Y'
+
+def get_chart(requests, perusahaan, durasi):
     """
     Fungsi ini akan menghasilkan image dari data stock seminggu terakhir dari perusahaan tertentu
     :return:
