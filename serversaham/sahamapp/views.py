@@ -2,14 +2,15 @@ import io
 import os
 
 from django.http import HttpResponse
+from django.shortcuts import render
 from matplotlib import pyplot
 from pandas import Series
 import matplotlib
 from matplotlib.figure import Figure
 
-def get_chart(requests):
-    perusahaan='SRTG'
-    durasi = '1Y'
+def get_chart(requests, perusahaan, durasi):
+    #perusahaan='SRTG'
+    #durasi = '1Y'
     """
     Fungsi ini akan menghasilkan image dari data stock seminggu terakhir dari perusahaan tertentu
     :return:
@@ -51,6 +52,7 @@ def get_chart(requests):
     #DATA VISUALIZATION
     f = matplotlib.figure.Figure()
     series = Series.from_csv('data.csv', header=0, sep=',')
+    pyplot.clf()
     pyplot.plot(series)
 
     #Django fix: create in buffer first
@@ -61,4 +63,6 @@ def get_chart(requests):
     response = HttpResponse(buf.getvalue(), content_type='image/png')
     return response
 
+def index(request):
+    return render(request, 'index.html')
 
