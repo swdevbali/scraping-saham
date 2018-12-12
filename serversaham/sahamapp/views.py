@@ -3,6 +3,7 @@ import matplotlib
 import os
 
 from django.http import HttpResponse
+from django.shortcuts import render
 from matplotlib import pyplot
 from pandas import Series
 
@@ -60,4 +61,7 @@ def get_chart(requests, perusahaan, durasi):
     response = HttpResponse(buf.getvalue(), content_type='image/png')
     return response
 
+
+def index(request):
+    return render(request, 'index.html')
 

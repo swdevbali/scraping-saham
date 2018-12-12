@@ -16,9 +16,11 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path
 
-from sahamapp.views import get_chart
+from sahamapp.views import get_chart, index
 
 urlpatterns = [
+    path('', index),
     path('admin/', admin.site.urls),
     path('saham/<perusahaan>/<durasi>', get_chart),
+
 ]
