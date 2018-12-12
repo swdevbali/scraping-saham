@@ -3,8 +3,12 @@ import matplotlib
 import os
 
 from django.http import HttpResponse
+from django.shortcuts import render
 from matplotlib import pyplot
 from pandas import Series
+
+def index(requests):
+    return render(requests, 'index.html')
 
 
 def get_chart(requests, perusahaan, durasi):
