@@ -1,3 +1,11 @@
+# https://enlight.nyc/projects/linear-regression
+"""
+ y = mx + b
+
+ This equation describes the linear relationship between x and y, with m being our slope and b being our y-intercept.
+ In machine learning, our y value is the predicted label, b is the bias, the slope m is the weight, and the x value is a feature (input).
+
+"""
 from statistics import mean
 import numpy as np
 
@@ -25,22 +33,7 @@ print("predicted coordinate: (" + str(round(x_prediction, 2)) + "," + str(round(
 
 # y values of regression line
 regression_line = [(m * x) + b for x in x_values]
-
-
-# R Squared Error
-def squared_error(ys_orig, ys_line):
-    return sum((ys_line - ys_orig) * (ys_line - ys_orig))
-
-
-def r_squared_value(ys_orig, ys_line):
-    squared_error_regr = squared_error(ys_orig, ys_line)  # squared error of regression line
-    y_mean_line = [mean(ys_orig) for y in ys_orig]  # horizontal line (mean of y values)
-    squared_error_y_mean = squared_error(ys_orig, y_mean_line)  # squared error of the mean horizontal line
-    return 1 - (squared_error_regr / squared_error_y_mean)
-
-
-r_squared = r_squared_value(y_values, regression_line)
-print("r squared value: " + str(r_squared))
+print(regression_line)
 
 # Plotting
 import matplotlib.pyplot as plt
@@ -53,4 +46,4 @@ plt.scatter(x_values, y_values, color='#5b9dff', label='data')
 plt.scatter(x_prediction, y_prediction, color='#fc003f', label="predicted")
 plt.plot(x_values, regression_line, color='000000', label='regression line')
 plt.legend(loc=4)
-plt.savefig("graph.png")
+plt.show("graph.png")
