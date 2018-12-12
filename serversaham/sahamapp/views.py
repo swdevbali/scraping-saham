@@ -49,6 +49,7 @@ def get_chart(requests, perusahaan, durasi):
     #DATA VISUALIZATION
     f = matplotlib.figure.Figure()
     series = Series.from_csv('data.csv', header=0, sep=',')
+    pyplot.clf()
     pyplot.plot(series)
 
     #Django fix: create in buffer first
