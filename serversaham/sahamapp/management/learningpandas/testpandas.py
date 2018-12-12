@@ -16,6 +16,8 @@ pprint.pprint(df)
 
 data_csv = pd.read_csv(os.path.join(os.path.dirname(__file__), 'data.csv'),
                        header=0, sep=',')
+print(data_csv)
+exit(0)
 #openpyxl
 df.to_excel(os.path.join(os.path.dirname(__file__),'data.xlsx'),
               sheet_name='Sheet1')

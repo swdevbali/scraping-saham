@@ -9,9 +9,15 @@
 from statistics import mean
 import numpy as np
 
-x_values = np.array([1, 2, 3, 4, 5, 6, 7, 8, 9, 10], dtype=np.float64)
-y_values = np.array([1, 4, 1, 6, 4, 7, 4, 6, 10, 8], dtype=np.float64)
-
+#TUGAS: KOPI 10 TANGAL DAN VALUE DARI CSV
+#P.R:
+"""
+- Buat URL Django / views untuk fungsi ini
+- Parameter /perusahaan/durasi => /hariprediksi
+- Kembalian: gambar django yang bisa diembed di html <img/>
+"""
+x_values = np.array([1, 2, 3, 4, 5, 6, 7, 8, 9, 10]) #Tanggal
+y_values = np.array([1, 4, 1, 6, 4, 7, 4, 6, 10, 8], dtype=np.float64) #Valuex_values = np.array([1, 2, 3, 4, 5, 6, 7, 8, 9, 10]) #Tanggal
 
 def best_fit_line(x_values, y_values):
     m = (((mean(x_values) * mean(y_values)) - mean(x_values * y_values)) /
@@ -19,9 +25,9 @@ def best_fit_line(x_values, y_values):
 
     b = mean(y_values) - m * mean(x_values)
 
-    return m, b
+    return m, b #tupple
 
-
+# y = mx + b
 m, b = best_fit_line(x_values, y_values)
 
 print("regression line: " + "y = " + str(round(m, 2)) + "x + " + str(round(b, 2)))
@@ -32,7 +38,9 @@ y_prediction = (m * x_prediction) + b
 print("predicted coordinate: (" + str(round(x_prediction, 2)) + "," + str(round(y_prediction, 2)) + ")")
 
 # y values of regression line
+# list
 regression_line = [(m * x) + b for x in x_values]
+regression_line_copy = [x for x in x_values]
 print(regression_line)
 
 # Plotting
