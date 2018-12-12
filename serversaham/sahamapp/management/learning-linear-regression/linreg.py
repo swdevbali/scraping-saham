@@ -12,16 +12,15 @@ import numpy as np
 x_values = np.array([1, 2, 3, 4, 5, 6, 7, 8, 9, 10], dtype=np.float64)
 y_values = np.array([1, 4, 1, 6, 4, 7, 4, 6, 10, 8], dtype=np.float64)
 
-
 def best_fit_line(x_values, y_values):
     m = (((mean(x_values) * mean(y_values)) - mean(x_values * y_values)) /
          ((mean(x_values) * mean(x_values)) - mean(x_values * x_values)))
 
     b = mean(y_values) - m * mean(x_values)
 
-    return m, b
+    return m, b #tupple
 
-
+# y = mx + b
 m, b = best_fit_line(x_values, y_values)
 
 print("regression line: " + "y = " + str(round(m, 2)) + "x + " + str(round(b, 2)))
