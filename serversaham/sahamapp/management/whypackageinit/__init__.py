@@ -1,0 +1,1 @@
+print('Dari init.py')

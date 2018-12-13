@@ -4,6 +4,7 @@ import pandas as pd
 
 names = ['sepal-length', 'sepal-width', 'petal-length', 'petal-width', 'Class']
 #https://archive.ics.uci.edu/ml/machine-learning-databases/iris/iris.data
+# dataset = pd.read_csv('https://archive.ics.uci.edu/ml/machine-learning-databases/iris/iris.data', names=names)
 dataset = pd.read_csv('iris.csv', names=names)
 print(dataset.head())
 
