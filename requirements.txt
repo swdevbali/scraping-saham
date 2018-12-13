@@ -11,3 +11,4 @@ Django
 numpy
 quandl
 sklearn
+openpyxl
