@@ -6,7 +6,7 @@ from statistics import mean
 
 import matplotlib
 import numpy as np
-from celery import AsyncResult
+from serversaham.celery import app
 from django.http import HttpResponse, JsonResponse
 from django.shortcuts import render
 from django.views.decorators.http import require_POST
@@ -17,7 +17,7 @@ from .tasks import do_linear_regression
 
 
 def task_state(request, task_id):
-    task = AsyncResult(task_id)
+    task = app.AsyncResult(task_id)
 
     return JsonResponse({
         'status': task.status,
@@ -101,8 +101,6 @@ def linreg_process(request):
             for x in time_series_csv.readlines() if not x.decode().startswith('#')]
 
     x_values, y_values = zip(*data)
-    x_values = np.array([x + 1 for x in range(len(x_values))])
-    y_values = np.array([float(x) for x in y_values], dtype=np.float64)
     x_predict = int(request.POST.get('x_predicted'), 0)
 
     task = do_linear_regression.delay(x_values, y_values, x_predict)

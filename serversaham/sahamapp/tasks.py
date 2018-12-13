@@ -1,6 +1,7 @@
 import base64
 import io
 from statistics import mean
+import numpy as np
 
 from celery import shared_task
 from matplotlib import pyplot, style
@@ -11,6 +12,9 @@ def do_linear_regression(x, y, x_predict):
     """
     celery task for linear regression
     """
+    x = np.array([i + 1 for i in range(len(x))])
+    y = np.array([float(x) for x in y], dtype=np.float64)
+
     def best_fit_line(x_values, y_values):
         m = (((mean(x_values) * mean(y_values)) - mean(x_values * y_values)) /
              ((mean(x_values) * mean(x_values)) - mean(x_values * x_values)))
@@ -39,7 +43,7 @@ def do_linear_regression(x, y, x_predict):
 
     pyplot.title('Linear Regression')
     pyplot.scatter(x, y, color='#5b9dff', label='data')
-    pyplot.scatter(x, y, color='#fc003f', label="predicted")
+    pyplot.scatter(x_predict, y_prediction, color='#fc003f', label="predicted")
     pyplot.plot(x, regression_line,
                 color='000000', label='regression line')
     pyplot.legend(loc=4)
@@ -49,4 +53,8 @@ def do_linear_regression(x, y, x_predict):
     pyplot.savefig(buf)
     pyplot.gcf().clear()
 
-    return base64.b64encode(buf.getvalue()).decode()
+    result = {
+        'img_base64': base64.b64encode(buf.getvalue()).decode()
+    }
+
+    return result
