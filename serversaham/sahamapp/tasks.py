@@ -1,10 +1,73 @@
 import base64
 import io
+import json
+import os
+import pprint
+import time
 from statistics import mean
-import numpy as np
 
+import requests
+
+import matplotlib
+import numpy as np
 from celery import shared_task
 from matplotlib import pyplot, style
+from pandas import Series
+
+
+@shared_task
+def do_scraping(perusahaan, durasi):
+
+    url = 'https://www.idx.co.id/umbraco/Surface/Helper/GetStockChart?indexCode={}&period={}'\
+        .format(perusahaan, durasi)
+
+    try:
+        # DATA ACQUISITON
+        result = requests.get(url)
+        if result.status_code == 200:
+
+            data = json.loads(result.text)
+
+            pprint.pprint(data)
+            print(data['ChartData'])
+            chart_data = data['ChartData']
+
+            # DATA PROCESSING
+            file_path = os.path.join(
+                os.getcwd(), f'data-{perusahaan}-{durasi}.csv')
+            f = open(file_path, 'w')
+            f.write('#Tanggal;Value\n')
+
+            for d in chart_data:
+                # print()
+                tanggal = time.strftime(
+                    "%Y-%m-%d %H:%M:%S", time.localtime(int(d['Date'])/1000))
+                value = d['Close']
+                print(tanggal, ';', value)
+                f.write('"{}",{}\n'.format(tanggal, value))
+            f.close()
+    except Exception as ex:
+        print(ex)
+
+    # DATA VISUALIZATION
+    f = matplotlib.figure.Figure()
+    series = Series.from_csv(
+        f'data-{perusahaan}-{durasi}.csv', header=0, sep=',')
+    pyplot.clf()
+    pyplot.plot(series)
+
+    # Django fix: create in buffer first
+    buf = io.BytesIO()
+    pyplot.savefig(buf)
+    pyplot.close(f)
+    f.clear()
+    pyplot.gcf().clear()
+
+    result = {
+        'img_base64': base64.b64encode(buf.getvalue()).decode()
+    }
+
+    return result
 
 
 @shared_task
