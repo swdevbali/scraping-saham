@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width" />
+    <title>Linreg Uploader</title>
+  </head>
+  <body>
+    <form id="upload" action="">
+      <p>
+      <label for="time_series_csv">Time Series CSV</label>
+      <input type="file" name="time_series_csv" id="time_series_csv" value="" />
+      </p>
+
+      <p>
+      <label for="x_predicted">X Predicted</label>
+      <input type="text" name="x_predicted" id="x_predicted" value="" />
+      </p>
+
+      {% csrf_token %}
+      <input type="submit" value="Submit" />
+    </form>
+
+    <img id="image" src="" alt="">
+
+    <script
+  src="https://code.jquery.com/jquery-3.3.1.min.js"
+  integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
+  crossorigin="anonymous"></script>
+
+    <script charset="utf-8">
+function csrfSafeMethod(method) {
+    // these HTTP methods do not require CSRF protection
+    return (/^(GET|HEAD|OPTIONS|TRACE)$/.test(method));
+}
+var csrftoken = $('[name="csrfmiddlewaretoken"]')[0].value
+$.ajaxSetup({
+    beforeSend: function(xhr, settings) {
+        if (!csrfSafeMethod(settings.type) && !this.crossDomain) {
+            xhr.setRequestHeader("X-CSRFToken", csrftoken);
+        }
+    }
+});
+      $(document).ready(function(){
+        $('#upload').submit(function(e){
+          e.preventDefault()
+
+          var data = new FormData(e.target)
+          console.log(data)
+
+          $.ajax({
+            url: '{% url "linreg_process" %}',
+            type: 'POST',
+            processData: false,
+            contentType: false,
+            data: data
+            }).then(response => {
+               $("#image").attr("src", "");
+               $("#image").attr("src", "data:image/png;base64," + response);
+            }).catch()
+        })
+      })
+      
+    </script>
+  </body>
+</html>

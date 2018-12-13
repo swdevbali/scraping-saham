@@ -16,11 +16,13 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path
 
-from sahamapp.views import get_chart, index
+from sahamapp.views import get_chart, index, linreg_view, linreg_process
 
 urlpatterns = [
     path('', index),
     path('admin/', admin.site.urls),
     path('saham/<perusahaan>/<durasi>', get_chart),
+    path('linreg/form', linreg_view, name='linreg_view'),
+    path('linreg/process', linreg_process, name='linreg_process'),
 
 ]
