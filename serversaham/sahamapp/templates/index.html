@@ -7,10 +7,47 @@
 <body>
   <a href="{% url 'linreg_view' %}">CSV form</a>
 <h2>BCA 1 Tahun</h2>
-<img src="/saham/BBCA/1Y"/>
+<img id='bca'>
 
 <h2>BNI 1 Tahun</h2>
-<img src="/saham/BBNI/1Y"/>
+<img id='bni'>
+
+    <script
+  src="https://code.jquery.com/jquery-3.3.1.min.js"
+  integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
+  crossorigin="anonymous"></script>
+<script charset="utf-8">
+window.interval = {}
+function onHasResult(result, img_id){
+
+  clearInterval(window.interval[img_id])
+  $('#' + img_id).attr('src', 'data:image/png;base64,' + result.img_base64)
+}
+
+function doInterval(task_id, img_id){
+  window.interval[img_id] = setInterval(function(){
+    $.ajax({
+      url: '/celery/' + task_id
+    }).then(response => {
+      if (response.status === 'SUCCESS'){
+        onHasResult(response.result, img_id)
+      }
+    })
+  }, 500)
+}
+
+function doReq(url, img_id){
+  $.ajax({url: url}).then(response => {
+    doInterval(response.task_id, img_id)
+  })
+}
+
+$(document).ready(function(){
+  doReq('/saham/BBNI/1Y', 'bni')
+  doReq('/saham/BBCA/1Y', 'bca')
+})
+
+</script>
 
 </body>
 </html>

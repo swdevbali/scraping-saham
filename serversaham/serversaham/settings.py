@@ -27,6 +27,10 @@ DEBUG = True
 
 ALLOWED_HOSTS = []
 
+CELERY_BROKER_URL = os.environ.get('BROKER_URL', 'amqp://saham:saham@localhost:5672/sahamvhost')
+CELERY_RESULT_BACKEND = os.environ.get('RESULT_BACKEND', 'amqp://saham:saham@localhost:5672/sahamvhost')
+
+
 
 # Application definition
 

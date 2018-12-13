@@ -1,0 +1,32 @@
+version: '3.2'
+services:
+    rabbit:
+        image: healthcheck/rabbitmq
+        environment:
+            RABBITMQ_DEFAULT_USER: saham
+            RABBITMQ_DEFAULT_PASS: saham
+            RABBITMQ_DEFAULT_VHOST: sahamvhost
+
+    celery:
+        restart: unless-stopped
+        build: .
+        command: celery -A serversaham worker -l info
+        environment:
+            BROKER_URL: 'amqp://saham:saham@rabbit:5672/sahamvhost'
+            RESULT_BACKEND: 'amqp://saham:saham@rabbit:5672/sahamvhost'
+
+    web_app:
+        restart: unless-stopped
+        build: .
+        command: python3 manage.py runserver 0.0.0.0:8000
+        volumes: 
+            - ./serversaham:/serversaham:rw
+        ports:
+            - '8000:8000'
+        environment:
+            BROKER_URL: 'amqp://saham:saham@rabbit:5672/sahamvhost'
+            RESULT_BACKEND: 'amqp://saham:saham@rabbit:5672/sahamvhost'
+            
+
+
+
