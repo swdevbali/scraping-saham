@@ -64,3 +64,11 @@ def get_chart(requests, perusahaan, durasi):
     response = HttpResponse(buf.getvalue(), content_type='image/png')
     return response
 
+
+def linreg():
+    """
+    Fungsi ini akan menampilkan linear regresi /forecast
+    :return:
+    """
+    from statistics import mean
+    import numpy as np
