@@ -11,7 +11,7 @@ import numpy as np
 import pandas as pd
 
 # Techinical Indicators
-# import talib as ta
+import talib as ta
 
 # Plotting graphs
 import matplotlib.pyplot as plt
@@ -45,7 +45,7 @@ df.head()
 
 df['S_10'] = df['Close'].rolling(window=10).mean()
 df['Corr'] = df['Close'].rolling(window=10).corr(df['S_10'])
-# df['RSI'] = ta.RSI(np.array(df['Close']), timeperiod =10)
+df['RSI'] = ta.RSI(np.array(df['Close']), timeperiod =10)
 df['Open-Close'] = df['Open'] - df['Close'].shift(1)
 df['Open-Open'] = df['Open'] - df['Open'].shift(1)
 df = df.dropna()
