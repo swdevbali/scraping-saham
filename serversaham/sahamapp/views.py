@@ -64,6 +64,8 @@ def get_chart(requests, perusahaan, durasi):
     buf = io.BytesIO()
     pyplot.savefig(buf, format='png')
     pyplot.close(f)
+    f.clear()
+    pyplot.gcf().clear()
 
     response = HttpResponse(buf.getvalue(), content_type='image/png')
     return response
@@ -130,7 +132,7 @@ def linreg_process(request):
     # Django fix: create in buffer first
     buf = io.BytesIO()
     pyplot.savefig(buf)
-    pyplot.close()
+    pyplot.gcf().clear()
 
     returned = base64.b64encode(buf.getvalue()).decode()
     response = HttpResponse(returned)
