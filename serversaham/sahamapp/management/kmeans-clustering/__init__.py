@@ -15,9 +15,10 @@ X = np.array([[5,3],
      [80,91],])
 
 plt.scatter(X[:,0],X[:,1], label='True Position')
+plt.show()
 
 #FIT MODEL
-kmeans = KMeans(n_clusters=3)
+kmeans = KMeans(n_clusters=4)
 kmeans.fit(X)
 
 #TITIK TENGAH SEMUA KLASTER YANG TERCIPTA
