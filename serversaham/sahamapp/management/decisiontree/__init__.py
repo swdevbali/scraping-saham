@@ -3,7 +3,8 @@ import numpy as np
 import matplotlib.pyplot as plt
 
 """
-The attributes are Variance of wavelet transformed image, curtosis of the image, entropy, and skewness of the image
+The attributes are Variance of wavelet transformed image, 
+curtosis of the image, entropy, and skewness of the image
 """
 dataset = pd.read_csv("bill_authentication.csv")
 print(dataset.shape)
