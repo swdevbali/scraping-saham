@@ -71,3 +71,4 @@ webencodings==0.5.1
 widgetsnbextension==3.4.2
 wrapt==1.10.11
 tensorflow
+nltk
